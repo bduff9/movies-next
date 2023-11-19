@@ -8,6 +8,7 @@ import { MovieItem, movitems } from '../../drizzle/schema';
 import { eq, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { requireAdmin } from '@/utils/auth';
 
 const validateMovieItem = (item: unknown): item is MovieItem => {
 	const schema = z.object({
@@ -55,6 +56,8 @@ const validateMovieItem = (item: unknown): item is MovieItem => {
 };
 
 export const addMovieItem = async (_prevState: any, formData: FormData) => {
+	await requireAdmin();
+
 	const item = {
 		item3D: formData.get('item3D'),
 		itemavail: formData.get('itemavail'),
@@ -99,6 +102,8 @@ export const addMovieItem = async (_prevState: any, formData: FormData) => {
 };
 
 export const editMovieItem = async (_prevState: any, formData: FormData) => {
+	await requireAdmin();
+
 	const item = {
 		item3D: formData.get('item3D'),
 		itemavail: formData.get('itemavail'),
@@ -146,6 +151,8 @@ export const editMovieItem = async (_prevState: any, formData: FormData) => {
 };
 
 export const toggleWatched = async (formData: FormData): Promise<void> => {
+	await requireAdmin();
+
 	const schema = z.coerce.number();
 	const id = schema.parse(formData.get('id'));
 	const [item] = await db

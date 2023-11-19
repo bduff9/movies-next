@@ -6,8 +6,11 @@ import { movies } from '../../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
+import { requireAdmin } from '@/utils/auth';
 
 export const deleteMovie = async (formData: FormData) => {
+	await requireAdmin();
+
 	const schema = z.coerce.number();
 	const id = schema.parse(formData.get('movieid'));
 	const itemId = schema.parse(formData.get('itemid'));
@@ -17,6 +20,8 @@ export const deleteMovie = async (formData: FormData) => {
 };
 
 export const addMovie = async (formData: FormData) => {
+	await requireAdmin();
+
 	const schema = z.object({
 		itemid: z.coerce.number(),
 		movietitle: z.string(),
