@@ -1,0 +1,622 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "5",
+  "dialect": "mysql",
+  "tables": {
+    "accounts": {
+      "name": "accounts",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "compound_id": {
+          "autoincrement": false,
+          "name": "compound_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_type": {
+          "autoincrement": false,
+          "name": "provider_type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_id": {
+          "autoincrement": false,
+          "name": "provider_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_account_id": {
+          "autoincrement": false,
+          "name": "provider_account_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refresh_token": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token_expires": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "access_token_expires",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "idx_provider_account_id": {
+          "name": "idx_provider_account_id",
+          "columns": [
+            "provider_account_id"
+          ],
+          "isUnique": false
+        },
+        "idx_provider_id": {
+          "name": "idx_provider_id",
+          "columns": [
+            "provider_id"
+          ],
+          "isUnique": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "uk_compound_id": {
+          "name": "uk_compound_id",
+          "columns": [
+            "compound_id"
+          ]
+        }
+      }
+    },
+    "migrations": {
+      "name": "migrations",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timestamp": {
+          "autoincrement": false,
+          "name": "timestamp",
+          "type": "bigint(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "movies": {
+      "name": "movies",
+      "columns": {
+        "MOVIEID": {
+          "autoincrement": true,
+          "name": "MOVIEID",
+          "type": "int(10) unsigned",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEMID": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "ITEMID",
+          "type": "int(10) unsigned",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "MOVIETITLE": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "MOVIETITLE",
+          "type": "varchar(99)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "MOVIEURL": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "MOVIEURL",
+          "type": "varchar(99)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "ITEMID": {
+          "name": "ITEMID",
+          "columns": [
+            "ITEMID"
+          ],
+          "isUnique": false
+        },
+        "MOVIETITLE": {
+          "name": "MOVIETITLE",
+          "columns": [
+            "MOVIETITLE"
+          ],
+          "isUnique": false
+        },
+        "MOVIEURL": {
+          "name": "MOVIEURL",
+          "columns": [
+            "MOVIEURL"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "FK_e22d334fab8edc4fe78966a43be": {
+          "name": "FK_e22d334fab8edc4fe78966a43be",
+          "tableFrom": "movies",
+          "tableTo": "movitems",
+          "columnsFrom": [
+            "ITEMID"
+          ],
+          "columnsTo": [
+            "itemid"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "movitems": {
+      "name": "movitems",
+      "columns": {
+        "ITEMID": {
+          "autoincrement": true,
+          "name": "ITEMID",
+          "type": "int(10) unsigned",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ORDERED": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "ORDERED",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ITEMNAME": {
+          "autoincrement": false,
+          "name": "ITEMNAME",
+          "type": "varchar(99)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEMCASE": {
+          "autoincrement": false,
+          "name": "ITEMCASE",
+          "type": "enum('Plain','Box','Slipcover','Digibook','Steelbook')",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEMDIGITL": {
+          "default": "''None''",
+          "autoincrement": false,
+          "name": "ITEMDIGITL",
+          "type": "enum('None','DC','UV','DC+UV')",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEM3D": {
+          "default": "''N''",
+          "autoincrement": false,
+          "name": "ITEM3D",
+          "type": "enum('Y','N')",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEMWATCH": {
+          "default": "''N''",
+          "autoincrement": false,
+          "name": "ITEMWATCH",
+          "type": "enum('Y','N')",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEMFORMAT": {
+          "autoincrement": false,
+          "name": "ITEMFORMAT",
+          "type": "enum('Blu-ray','DVD','Ultra HD','UV','Digital')",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEMSTATUS": {
+          "autoincrement": false,
+          "name": "ITEMSTATUS",
+          "type": "enum('Owned','Wanted','Selling','Waiting')",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEMAVAIL": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "ITEMAVAIL",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ITEMURL": {
+          "autoincrement": false,
+          "name": "ITEMURL",
+          "type": "varchar(99)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ITEMNOTES": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "ITEMNOTES",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "ITEMNAME": {
+          "name": "ITEMNAME",
+          "columns": [
+            "ITEMNAME"
+          ],
+          "isUnique": false
+        },
+        "ITEMCASE": {
+          "name": "ITEMCASE",
+          "columns": [
+            "ITEMCASE"
+          ],
+          "isUnique": false
+        },
+        "ITEMDIGITL": {
+          "name": "ITEMDIGITL",
+          "columns": [
+            "ITEMDIGITL"
+          ],
+          "isUnique": false
+        },
+        "ITEM3D": {
+          "name": "ITEM3D",
+          "columns": [
+            "ITEM3D"
+          ],
+          "isUnique": false
+        },
+        "ITEMWATCH": {
+          "name": "ITEMWATCH",
+          "columns": [
+            "ITEMWATCH"
+          ],
+          "isUnique": false
+        },
+        "ITEMFORMAT": {
+          "name": "ITEMFORMAT",
+          "columns": [
+            "ITEMFORMAT"
+          ],
+          "isUnique": false
+        },
+        "ITEMSTATUS": {
+          "name": "ITEMSTATUS",
+          "columns": [
+            "ITEMSTATUS"
+          ],
+          "isUnique": false
+        },
+        "ITEMAVAIL": {
+          "name": "ITEMAVAIL",
+          "columns": [
+            "ITEMAVAIL"
+          ],
+          "isUnique": false
+        },
+        "ITEMURL": {
+          "name": "ITEMURL",
+          "columns": [
+            "ITEMURL"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "ORDERED": {
+          "name": "ORDERED",
+          "columns": [
+            "ORDERED"
+          ]
+        },
+        "IDX_fd702e539ab7b35cd2338fb3e3": {
+          "name": "IDX_fd702e539ab7b35cd2338fb3e3",
+          "columns": [
+            "ORDERED"
+          ]
+        }
+      }
+    },
+    "sessions": {
+      "name": "sessions",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "expires",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "session_token": {
+          "autoincrement": false,
+          "name": "session_token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "access_token": {
+          "autoincrement": false,
+          "name": "access_token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "uk_session_token": {
+          "name": "uk_session_token",
+          "columns": [
+            "session_token"
+          ]
+        },
+        "uk_access_token": {
+          "name": "uk_access_token",
+          "columns": [
+            "access_token"
+          ]
+        }
+      }
+    },
+    "users": {
+      "name": "users",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email_verified": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "email_verified",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "image",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "uk_email": {
+          "name": "uk_email",
+          "columns": [
+            "email"
+          ]
+        }
+      }
+    },
+    "verification_requests": {
+      "name": "verification_requests",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "identifier": {
+          "autoincrement": false,
+          "name": "identifier",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "autoincrement": false,
+          "name": "token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "expires",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "default": "'current_timestamp(6)'",
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "uk_token": {
+          "name": "uk_token",
+          "columns": [
+            "token"
+          ]
+        }
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

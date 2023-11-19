@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1696605665036,
+      "tag": "0000_deep_dreaming_celestial",
+      "breakpoints": true
+    }
+  ]
+}

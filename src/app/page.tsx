@@ -1,113 +1,99 @@
-import Image from 'next/image'
+import { db } from '@/lib/db';
+import { NP } from '@/lib/types';
+import { movitems } from '../../drizzle/schema';
+import { SQL, and, asc, desc, eq, like, sql } from 'drizzle-orm';
+import Toolbar from '@/components/Toolbar';
+import MovieItem from '@/components/MovieItem';
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+const getData = async (searchParams: {
+	[key: string]: string | string[] | undefined;
+}) => {
+	const ITEMS_PER_PAGE = 25;
+	const sortDir = searchParams.order === 'asc' ? asc : desc;
+	const where: SQL[] = [];
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+	if (searchParams.itemname) {
+		where.push(like(movitems.itemname, `%${searchParams.itemname}%`));
+	}
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+	if (searchParams.itemcase) {
+		where.push(eq(movitems.itemcase, searchParams.itemcase as any));
+	}
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+	if (searchParams.itemdigitl) {
+		where.push(eq(movitems.itemdigitl, searchParams.itemdigitl as any));
+	}
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+	if (searchParams.itemformat) {
+		where.push(eq(movitems.itemformat, searchParams.itemformat as any));
+	}
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+	if (searchParams.item3D) {
+		where.push(eq(movitems.item3D, searchParams.item3D as any));
+	}
+
+	if (searchParams.itemwatch) {
+		where.push(eq(movitems.itemwatch, searchParams.itemwatch as any));
+	}
+
+	if (searchParams.itemstatus) {
+		where.push(eq(movitems.itemstatus, searchParams.itemstatus as any));
+	}
+
+	let orderBy = sortDir(movitems.itemid);
+
+	if (searchParams.sort === 'ordered') {
+		orderBy = sortDir(movitems.ordered);
+	} else if (searchParams.sort === 'itemname') {
+		orderBy = sortDir(movitems.itemname);
+	}
+
+	const total = await db
+		.select({ count: sql<number>`count(*)` })
+		.from(movitems)
+		.where(and(...where));
+	const maxPage = Math.ceil(total[0].count / ITEMS_PER_PAGE);
+	let page = searchParams.page ? Number(searchParams.page) : 1;
+
+	if (page < 1) {
+		page = 1;
+	} else if (page > maxPage) {
+		page = maxPage;
+	}
+
+	const movieItems = await db
+		.select()
+		.from(movitems)
+		.where(and(...where))
+		.orderBy(orderBy)
+		.limit(ITEMS_PER_PAGE)
+		.offset((page - 1) * ITEMS_PER_PAGE);
+
+	return {
+		maxPage,
+		movieItems,
+		page,
+	};
+};
+
+const HomePage: NP = async ({ searchParams }) => {
+	const { maxPage, movieItems, page } = await getData(searchParams);
+
+	return (
+		<main className="min-h-screen max-w-screen">
+			<Toolbar maxPage={maxPage} page={page} searchParams={searchParams} />
+			<div className="flex flex-wrap gap-3 justify-center pt-3">
+				{movieItems.length === 0 && (
+					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xl text-gray-400">
+						No movies found
+					</div>
+				)}
+				{movieItems.map((item) => (
+					<MovieItem item={item} key={`movie-item-${item.itemid}`} />
+				))}
+			</div>
+		</main>
+	);
+};
+
+export default HomePage;
