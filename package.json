@@ -13,7 +13,7 @@
     "pages:dev": "npx wrangler pages dev .vercel/output/static --compatibility-flag=nodejs_compat"
   },
   "dependencies": {
-    "@clerk/nextjs": "4.29.1",
+    "@clerk/nextjs": "4.29.3",
     "@vercel/analytics": "1.1.1",
     "class-variance-authority": "0.7.0",
     "clsx": "2.0.0",
